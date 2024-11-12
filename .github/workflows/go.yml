@@ -1,15 +1,22 @@
 name: Go
 on:
- push:
-    branches: [ "main" ]
+  push:
+    branches: ["main"]
+
 jobs:
- build:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.21.5'
-    - name: Build
-      run: go build -v ./...
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.19.1'
+      - name: Initialize Go modules if needed
+        run: |
+          if [ ! -f go.mod ]; then
+            go mod init mymodule
+          fi
+          go mod tidy
+      - name: Build
+        run: go build -v .
